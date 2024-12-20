@@ -3,25 +3,22 @@ import pandas as pd
 import joblib
 import numpy as np
 
-
 def encode_month_sin_cos(X):
-    month_map = {'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'aug': 8,
+    month_map = {'jan':1, 'feb':2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'aug': 8,
                  'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
-    months = X["month"]  # Access column by name
-    months = months.map(month_map).fillna(0)  # Map and handle missing
+    months = X["month"]  
+    months = months.map(month_map).fillna(0)  
     month_sin = np.sin(2 * np.pi * months / 12)
     month_cos = np.cos(2 * np.pi * months / 12)
     return pd.DataFrame({"month_sin": month_sin, "month_cos": month_cos})
 
-def month_feature_names_out(self, input_features): #this took way too long to figure out jesus christ
+def month_feature_names_out(self, input_features): 
     return ["month_sin", "month_cos"]
 
 
-# Load preprocessor and model
 preprocessor = joblib.load('preprocessing_pipeline.pkl')
-model = joblib.load('random_forest_model.pkl')  # Replace with your model file
+model = joblib.load('random_forest_model.pkl')  
 
-# Define the app
 st.title("Bank Term Deposit Prediction")
 st.write("Enter customer details to predict if they will subscribe to a term deposit.")
 
@@ -50,22 +47,14 @@ user_input = {
     'nr.employed': st.number_input('Number of Employees', value=5191.0)
 }
 
-# When the user clicks "Predict"
 if st.button("Predict"):
-    # Convert user input to DataFrame
     user_df = pd.DataFrame([user_input])
-   #dummy y
+    #dummy y for preprocessor
     user_df['y'] = 0
-    # Preprocess input data
     user_transformed = preprocessor.transform(user_df)
-    #drop last column
+    #drop dummy y
     user_transformed = pd.DataFrame(user_transformed, columns=preprocessor.get_feature_names_out()).iloc[:, :-1]
 
-    #st.write("Transformed input shape:", user_transformed.shape)
-    #st.write("Transformed input data:", user_transformed)
-
-
-    # Predict
     prediction = model.predict(user_transformed)[0]
     
     # Display the prediction
