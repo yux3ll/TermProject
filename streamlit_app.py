@@ -2,6 +2,20 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+
+def encode_month_sin_cos(X):
+    month_map = {'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'aug': 8,
+                 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
+    months = X["month"]  # Access column by name
+    months = months.map(month_map).fillna(0)  # Map and handle missing
+    month_sin = np.sin(2 * np.pi * months / 12)
+    month_cos = np.cos(2 * np.pi * months / 12)
+    return pd.DataFrame({"month_sin": month_sin, "month_cos": month_cos})
+
+def month_feature_names_out(self, input_features): #this took way too long to figure out jesus christ
+    return ["month_sin", "month_cos"]
+
+
 # Load preprocessor and model
 preprocessor = joblib.load('preprocessing_pipeline.pkl')
 model = joblib.load('random_forest_model.pkl')  # Replace with your model file
