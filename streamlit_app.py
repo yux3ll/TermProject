@@ -17,7 +17,7 @@ def month_feature_names_out(self, input_features):
 
 
 preprocessor = joblib.load('preprocessing_pipeline.pkl')
-model = joblib.load('random_forest_model.pkl')  
+model = joblib.load('model.pkl')  
 
 st.title("Bank Term Deposit Prediction")
 st.write("Enter customer details to predict if they will subscribe to a term deposit.")
