@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import numpy as np
 
 
 def encode_month_sin_cos(X):
@@ -53,10 +54,17 @@ user_input = {
 if st.button("Predict"):
     # Convert user input to DataFrame
     user_df = pd.DataFrame([user_input])
-    
+   #dummy y
+    user_df['y'] = 0
     # Preprocess input data
     user_transformed = preprocessor.transform(user_df)
-    
+    #drop last column
+    user_transformed = pd.DataFrame(user_transformed, columns=preprocessor.get_feature_names_out()).iloc[:, :-1]
+
+    st.write("Transformed input shape:", user_transformed.shape)
+    st.write("Transformed input data:", user_transformed)
+
+
     # Predict
     prediction = model.predict(user_transformed)[0]
     
