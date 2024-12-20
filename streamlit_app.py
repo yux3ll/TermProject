@@ -61,8 +61,8 @@ if st.button("Predict"):
     #drop last column
     user_transformed = pd.DataFrame(user_transformed, columns=preprocessor.get_feature_names_out()).iloc[:, :-1]
 
-    st.write("Transformed input shape:", user_transformed.shape)
-    st.write("Transformed input data:", user_transformed)
+    #st.write("Transformed input shape:", user_transformed.shape)
+    #st.write("Transformed input data:", user_transformed)
 
 
     # Predict
