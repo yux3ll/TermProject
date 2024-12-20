@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 
 # Load preprocessor and model
-preprocessor = joblib.load('preprocessor.pkl')
+preprocessor = joblib.load('preprocessing_pipeline.pkl')
 model = joblib.load('random_forest_model.pkl')  # Replace with your model file
 
 # Define the app
